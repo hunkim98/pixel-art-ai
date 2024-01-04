@@ -39,8 +39,14 @@ def get_pixilart_item(id):
         if comments_count == 0:
             return None
         
+        # escape double quotes
+        title = title.replace('"', '""') # csv default escape character is double quotes
+        
         # add double quotes to title
         title = f'"{title}"'
+        
+        # escape double quotes
+        description = description.replace('"', '""')
         
         # add double quotes to description
         description = f'"{description}"'
