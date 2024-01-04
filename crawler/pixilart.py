@@ -19,8 +19,8 @@ def record_item(id, width, height, pixel_size, title, description,likes_count, c
 def get_pixilart_item(id):
     url = f'https://www.pixilart.com/api/w/art/{id}?more=true'
     response = requests.get(url)
-    print(response.status_code)
     if response.status_code == 200:
+        print(f'{id} exists')
         data = response.json()['art']
         width = data['width']
         height = data['height']
@@ -31,10 +31,24 @@ def get_pixilart_item(id):
         likes_count = data['likes_count']
         comments_count = data['comments_count']
         
+        # conditions
+        if title == None or title == '' or title == "Untitled" or title == " ":
+            return None
+        if likes_count == 0:
+            return None
+        if comments_count == 0:
+            return None
+        
+        # add double quotes to title
+        title = f'"{title}"'
+        
+        # add double quotes to description
+        description = f'"{description}"'
+        
         download_image(image_url, f'{id}.png')
         is_gif = data['is_gif']
-        print(f'Pixilart item {id} found')
         record_item(id, width, height, pixel_size, title, description,likes_count,comments_count,image_url)
+        print(f'Pixilart item {id} recorded and downloaded')
         return response.json()
     else:
         return None
