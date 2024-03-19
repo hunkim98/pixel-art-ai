@@ -2,6 +2,11 @@ import math
 from dezero import cuda, Parameter
 
 
+def clip_gradients(grad, clip_value=1.0):
+    xp = cuda.get_array_module(grad)
+    return xp.clip(grad, -clip_value, clip_value)
+
+
 # =============================================================================
 # Optimizer (base class)
 # =============================================================================
@@ -49,7 +54,7 @@ class ClipGrad:
     def __call__(self, params):
         total_norm = 0
         for param in params:
-            total_norm += (param.grad.data ** 2).sum()
+            total_norm += (param.grad.data**2).sum()
         total_norm = math.sqrt(float(total_norm))
 
         rate = self.max_norm / (total_norm + 1e-6)
@@ -71,7 +76,6 @@ class FreezeParam:
     def __call__(self, params):
         for p in self.freeze_params:
             p.grad = None
-
 
 
 # =============================================================================
@@ -174,8 +178,8 @@ class Adam(Optimizer):
 
     @property
     def lr(self):
-        fix1 = 1. - math.pow(self.beta1, self.t)
-        fix2 = 1. - math.pow(self.beta2, self.t)
+        fix1 = 1.0 - math.pow(self.beta1, self.t)
+        fix2 = 1.0 - math.pow(self.beta2, self.t)
         return self.alpha * math.sqrt(fix2) / fix1
 
     def update_one(self, param):
@@ -189,6 +193,8 @@ class Adam(Optimizer):
         m, v = self.ms[key], self.vs[key]
         beta1, beta2, eps = self.beta1, self.beta2, self.eps
         grad = param.grad.data
+
+        grad = clip_gradients(grad, 1.0)
 
         m += (1 - beta1) * (grad - m)
         v += (1 - beta2) * (grad * grad - v)

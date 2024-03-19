@@ -2,6 +2,23 @@ import numpy as np
 import dezero
 from dezero import cuda, utils
 from dezero.core import Function, Variable, as_variable, as_array
+import warnings
+import contextlib
+
+
+# This is a context manager that catches warnings of a specific category and sets a flag if any are caught
+@contextlib.contextmanager
+def catch_warning_and_flag(flag_container, warning_category=RuntimeWarning):
+    with warnings.catch_warnings(record=True) as w:
+        warnings.simplefilter(
+            "always", warning_category
+        )  # Catch all warnings of category
+        yield w  # Allow code to run in this context
+        for warning in w:  # Check if any of the caught warnings match our criteria
+            if "overflow" in str(warning.message):
+                flag_container[0] = (
+                    True  # Set the flag to True if overflow warning is caught
+                )
 
 
 # =============================================================================
@@ -14,7 +31,7 @@ class Sin(Function):
         return y
 
     def backward(self, gy):
-        x, = self.inputs
+        (x,) = self.inputs
         gx = gy * cos(x)
         return gx
 
@@ -30,7 +47,7 @@ class Cos(Function):
         return y
 
     def backward(self, gy):
-        x, = self.inputs
+        (x,) = self.inputs
         gx = gy * -sin(x)
         return gx
 
@@ -58,7 +75,21 @@ def tanh(x):
 class Exp(Function):
     def forward(self, x):
         xp = cuda.get_array_module(x)
-        y = xp.exp(x)
+        # 원래는 아래 1줄
+        # y = xp.exp(x)
+
+        # Starting from here 여기부터 추가한 부분
+        overflow_flag = [
+            False
+        ]  # Container to hold our flag, lists are mutable and can be modified
+        with catch_warning_and_flag(overflow_flag):
+            y = xp.exp(x)
+
+        if overflow_flag[0]:
+            print("Warning: overflow is detected from Exp.forward()")
+            max_value = xp.finfo(x.dtype).max
+            y = xp.clip(y, -max_value, max_value)
+        # Ending here 여기까지 추가한 부분
         return y
 
     def backward(self, gy):
@@ -74,11 +105,27 @@ def exp(x):
 class Log(Function):
     def forward(self, x):
         xp = cuda.get_array_module(x)
+        # Starting from here 여기부터 추가한 부분
+        epsilon = 1e-20
+        if xp.any(x == 0):
+            x.data = xp.clip(x.data, epsilon, None)
+            print("Warning: x has zero! from Log.forward()")
+        # Ending here 여기까지 추가한 부분
+
         y = xp.log(x)
         return y
 
     def backward(self, gy):
-        x, = self.inputs
+        (x,) = self.inputs
+        epsilon = 1e-20
+        xp = cuda.get_array_module(x)
+
+        # Starting from here 여기부터 추가한 부분
+        if xp.any(x + epsilon == 0):
+            x.data = xp.clip(x.data, epsilon, None)
+            print("Warning: x has zero! from Log.backward()")
+        # Ending here 여기까지 추가한 부분
+
         gx = gy / x
         return gx
 
@@ -139,7 +186,7 @@ class GetItem(Function):
         return y
 
     def backward(self, gy):
-        x, = self.inputs
+        (x,) = self.inputs
         f = GetItemGrad(self.slices, x.shape)
         return f(gy)
 
@@ -157,6 +204,7 @@ class GetItemGrad(Function):
             np.add.at(gx, self.slices, gy)
         else:
             import cupyx
+
             cupyx.scatter_add(gx, self.slices, gy)
             # xp.scatter_add(gx, self.slices, gy)
         return gx
@@ -196,14 +244,14 @@ class Sum(Function):
         return y
 
     def backward(self, gy):
-        gy = utils.reshape_sum_backward(gy, self.x_shape, self.axis,
-                                        self.keepdims)
+        gy = utils.reshape_sum_backward(gy, self.x_shape, self.axis, self.keepdims)
         gx = broadcast_to(gy, self.x_shape)
         return gx
 
 
 def sum(x, axis=None, keepdims=False):
     return Sum(axis, keepdims)(x)
+
 
 class Abs(Function):
     def forward(self, x):
@@ -212,10 +260,11 @@ class Abs(Function):
         return y
 
     def backward(self, gy):
-        x, = self.inputs
+        (x,) = self.inputs
         xp = cuda.get_array_module(x)
         gx = gy * x / xp.abs(x)
         return gx
+
 
 def abs(x):
     return Abs()(x)
@@ -349,7 +398,7 @@ class ReLU(Function):
         return y
 
     def backward(self, gy):
-        x, = self.inputs
+        (x,) = self.inputs
         mask = x.data > 0
         gx = gy * mask
         return gx
@@ -418,7 +467,7 @@ class LeakyReLU(Function):
         return y
 
     def backward(self, gy):
-        x, = self.inputs
+        (x,) = self.inputs
         mask = (x.data > 0).astype(gy.dtype)
         mask[mask <= 0] = self.slope
         gx = gy * mask
@@ -435,23 +484,24 @@ def leaky_relu(x, slope=0.2):
 def mean_squared_error_simple(x0, x1):
     x0, x1 = as_variable(x0), as_variable(x1)
     diff = x0 - x1
-    y = sum(diff ** 2) / len(diff)
+    y = sum(diff**2) / len(diff)
     return y
 
 
 class MeanSquaredError(Function):
     def forward(self, x0, x1):
         diff = x0 - x1
-        y = (diff ** 2).sum() / len(diff)
+        y = (diff**2).sum() / len(diff)
         return y
 
     def backward(self, gy):
         x0, x1 = self.inputs
         diff = x0 - x1
-        gx0 = gy * diff * (2. / len(diff))
+        gx0 = gy * diff * (2.0 / len(diff))
         gx1 = -gx0
         return gx0, gx1
-    
+
+
 def mean_squared_error(x0, x1):
     return MeanSquaredError()(x0, x1)
 
@@ -480,7 +530,7 @@ class SoftmaxCrossEntropy(Function):
         x, t = self.inputs
         N, CLS_NUM = x.shape
 
-        gy *= 1/N
+        gy *= 1 / N
         y = softmax(x)
         # convert to one-hot
         xp = cuda.get_array_module(t.data)
@@ -503,6 +553,7 @@ def sigmoid_cross_entropy(x, t):
     tlog_p = t * log(p) + (1 - t) * log(1 - p)
     y = -1 * sum(tlog_p) / N
     return y
+
 
 def l1_loss(x, t):
     diff = x - t
@@ -530,7 +581,7 @@ def accuracy(y, t):
     y, t = as_variable(y), as_variable(t)
 
     pred = y.data.argmax(axis=1).reshape(t.shape)
-    result = (pred == t.data)
+    result = pred == t.data
     acc = result.mean()
     return Variable(as_array(acc))
 
@@ -546,6 +597,7 @@ def dropout(x, dropout_ratio=0.5):
         return y
     else:
         return x
+
 
 class BatchNorm(Function):
     def __init__(self, mean, var, decay, eps):
@@ -573,7 +625,7 @@ class BatchNorm(Function):
             xc = (x - mean) * inv_std
 
             m = x.size // gamma.size
-            s = m - 1. if m - 1. > 1. else 1.
+            s = m - 1.0 if m - 1.0 > 1.0 else 1.0
             adjust = m / s  # unbiased estimation
             self.avg_mean *= self.decay
             self.avg_mean += (1 - self.decay) * mean
@@ -642,7 +694,7 @@ class Max(Function):
         shape = utils.max_backward_shape(x, self.axis)
         gy = reshape(gy, shape)
         y = reshape(y, shape)
-        cond = (x.data == y.data)
+        cond = x.data == y.data
         gy = broadcast_to(gy, cond.shape)
         return gy * cond
 
@@ -672,7 +724,7 @@ class Clip(Function):
         return y
 
     def backward(self, gy):
-        x, = self.inputs
+        (x,) = self.inputs
         mask = (x.data >= self.x_min) * (x.data <= self.x_max)
         gx = gy * mask
         return gx
@@ -680,6 +732,7 @@ class Clip(Function):
 
 def clip(x, x_min, x_max):
     return Clip(x_min, x_max)(x)
+
 
 # =============================================================================
 # conv2d / col2im / im2col / basic_math

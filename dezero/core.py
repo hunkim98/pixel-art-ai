@@ -2,6 +2,23 @@ import weakref
 import numpy as np
 import contextlib
 import dezero
+import warnings
+import contextlib
+
+
+# I added this for overflow detection
+@contextlib.contextmanager
+def catch_warning_and_flag(flag_container, warning_category=RuntimeWarning):
+    with warnings.catch_warnings(record=True) as w:
+        warnings.simplefilter(
+            "always", warning_category
+        )  # Catch all warnings of category
+        yield w  # Allow code to run in this context
+        for warning in w:  # Check if any of the caught warnings match our criteria
+            if "overflow" in str(warning.message):
+                flag_container[0] = (
+                    True  # Set the flag to True if overflow warning is caught
+                )
 
 
 # =============================================================================
@@ -23,20 +40,22 @@ def using_config(name, value):
 
 
 def no_grad():
-    return using_config('enable_backprop', False)
+    return using_config("enable_backprop", False)
 
 
 def test_mode():
-    return using_config('train', False)
+    return using_config("train", False)
+
 
 # =============================================================================
 # Variable / Function
 # =============================================================================
 try:
     import cupy
+
     array_types = (np.ndarray, cupy.ndarray)
 except ImportError:
-    array_types = (np.ndarray)
+    array_types = np.ndarray
 
 
 class Variable:
@@ -45,7 +64,7 @@ class Variable:
     def __init__(self, data, name=None):
         if data is not None:
             if not isinstance(data, array_types):
-                raise TypeError('{} is not supported'.format(type(data)))
+                raise TypeError("{} is not supported".format(type(data)))
 
         self.data = data
         self.name = name
@@ -74,9 +93,9 @@ class Variable:
 
     def __repr__(self):
         if self.data is None:
-            return 'variable(None)'
-        p = str(self.data).replace('\n', '\n' + ' ' * 9)
-        return 'variable(' + p + ')'
+            return "variable(None)"
+        p = str(self.data).replace("\n", "\n" + " " * 9)
+        return "variable(" + p + ")"
 
     def set_creator(self, func):
         self.creator = func
@@ -107,7 +126,7 @@ class Variable:
             f = funcs.pop()
             gys = [output().grad for output in f.outputs]  # output is weakref
 
-            with using_config('enable_backprop', create_graph):
+            with using_config("enable_backprop", create_graph):
                 gxs = f.backward(*gys)
                 if not isinstance(gxs, tuple):
                     gxs = (gxs,)
@@ -287,13 +306,60 @@ def rsub(x0, x1):
 
 class Div(Function):
     def forward(self, x0, x1):
-        y = x0 / x1
+        # 원래는 아래것 하나만 있었다
+        # y = x0 / x1
+
+        #  Starting from here 여기서부터는 내가 추가한 부분
+        epsilon = 1e-20
+        xp = dezero.cuda.get_array_module(x0)
+        x1.data = xp.where(xp.abs(x1.data) < epsilon, epsilon, x1.data)
+        if xp.any(x1 == 0):
+            print("Warning: x1 is zero! from Div.forward()")
+
+        overflow_flag = [False]
+        with catch_warning_and_flag(overflow_flag):
+            y = x0 / x1
+
+        if overflow_flag[0]:
+            print("Warning: overflow is detected in Div.forward()")
+            max_value = xp.finfo(x0.dtype).max
+            y = xp.clip(y, -max_value, max_value)
+        # Ends here 여기까지가 내가 추가한 부분
         return y
 
     def backward(self, gy):
         x0, x1 = self.inputs
-        gx0 = gy / x1
-        gx1 = gy * (-x0 / x1 ** 2)
+        # 원래는 아래 것 2개만 있었다
+        # gx0 = gy / x1
+        # gx1 = gy * (-x0 / x1**2)
+
+        # Starting from here 여기서부터는 내가 추가한 부분
+        epsilon = 1e-20
+        xp = dezero.cuda.get_array_module(x1)
+        x1.data = xp.where(xp.abs(x1.data) < epsilon, epsilon, x1.data)
+        if xp.any(x1 == 0):
+            print("Warning: x1 is zero! from Div.backward()")
+
+        overflow_flag = [False]
+        with catch_warning_and_flag(overflow_flag):
+            gx0 = gy / x1
+
+        if overflow_flag[0]:
+            print("Warning: overflow is detected in Div.backward()")
+            max_value = xp.finfo(gx0.dtype).max
+            gx0 = xp.clip(gx0, -max_value, max_value)
+
+        overflow_flag = [False]
+
+        with catch_warning_and_flag(overflow_flag):
+            gx1 = gy * (-x0 / x1**2)
+
+        if overflow_flag[0]:
+            print("Warning: overflow is detected in Div.backward()")
+            max_value = xp.finfo(gx1.dtype).max
+            gx1 = xp.clip(gx1, -max_value, max_value)
+        # Ends here 여기까지가 내가 추가한 부분
+
         if x0.shape != x1.shape:  # for broadcast
             gx0 = dezero.functions.sum_to(gx0, x0.shape)
             gx1 = dezero.functions.sum_to(gx1, x1.shape)
@@ -315,11 +381,15 @@ class Pow(Function):
         self.c = c
 
     def forward(self, x):
-        y = x ** self.c
+        # I added this
+        epsilon = 1e-20
+        x += epsilon
+        # (Up) I added this
+        y = x**self.c
         return y
 
     def backward(self, gy):
-        x, = self.inputs
+        (x,) = self.inputs
         c = self.c
         gx = c * x ** (c - 1) * gy
         return gx
