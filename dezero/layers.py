@@ -54,7 +54,7 @@ class Layer:
     def _flatten_params(self, params_dict, parent_key=""):
         for name in self._params:
             obj = self.__dict__[name]
-            key = parent_key + '/' + name if parent_key else name
+            key = parent_key + "/" + name if parent_key else name
 
             if isinstance(obj, Layer):
                 obj._flatten_params(params_dict, key)
@@ -66,8 +66,9 @@ class Layer:
 
         params_dict = {}
         self._flatten_params(params_dict)
-        array_dict = {key: param.data for key, param in params_dict.items()
-                      if param is not None}
+        array_dict = {
+            key: param.data for key, param in params_dict.items() if param is not None
+        }
         try:
             np.savez_compressed(path, **array_dict)
         except (Exception, KeyboardInterrupt) as e:
@@ -93,14 +94,14 @@ class Linear(Layer):
         self.out_size = out_size
         self.dtype = dtype
 
-        self.W = Parameter(None, name='W')
+        self.W = Parameter(None, name="W")
         if self.in_size is not None:
             self._init_W()
 
         if nobias:
             self.b = None
         else:
-            self.b = Parameter(np.zeros(out_size, dtype=dtype), name='b')
+            self.b = Parameter(np.zeros(out_size, dtype=dtype), name="b")
 
     def _init_W(self, xp=np):
         I, O = self.in_size, self.out_size
@@ -118,8 +119,16 @@ class Linear(Layer):
 
 
 class Conv2d(Layer):
-    def __init__(self, out_channels, kernel_size, stride=1,
-                 pad=0, nobias=False, dtype=np.float32, in_channels=None):
+    def __init__(
+        self,
+        out_channels,
+        kernel_size,
+        stride=1,
+        pad=0,
+        nobias=False,
+        dtype=np.float32,
+        in_channels=None,
+    ):
         """Two-dimensional convolutional layer.
 
         Args:
@@ -140,14 +149,14 @@ class Conv2d(Layer):
         self.pad = pad
         self.dtype = dtype
 
-        self.W = Parameter(None, name='W')
+        self.W = Parameter(None, name="W")
         if in_channels is not None:
             self._init_W()
 
         if nobias:
             self.b = None
         else:
-            self.b = Parameter(np.zeros(out_channels, dtype=dtype), name='b')
+            self.b = Parameter(np.zeros(out_channels, dtype=dtype), name="b")
 
     def _init_W(self, xp=np):
         C, OC = self.in_channels, self.out_channels
@@ -167,8 +176,16 @@ class Conv2d(Layer):
 
 
 class Deconv2d(Layer):
-    def __init__(self, out_channels, kernel_size, stride=1,
-                 pad=0, nobias=False, dtype=np.float32, in_channels=None):
+    def __init__(
+        self,
+        out_channels,
+        kernel_size,
+        stride=1,
+        pad=0,
+        nobias=False,
+        dtype=np.float32,
+        in_channels=None,
+    ):
         """Two-dimensional deconvolutional (transposed convolution)layer.
 
         Args:
@@ -189,14 +206,14 @@ class Deconv2d(Layer):
         self.pad = pad
         self.dtype = dtype
 
-        self.W = Parameter(None, name='W')
+        self.W = Parameter(None, name="W")
         if in_channels is not None:
             self._init_W()
 
         if nobias:
             self.b = None
         else:
-            self.b = Parameter(np.zeros(out_channels, dtype=dtype), name='b')
+            self.b = Parameter(np.zeros(out_channels, dtype=dtype), name="b")
 
     def _init_W(self, xp=np):
         C, OC = self.in_channels, self.out_channels
@@ -278,14 +295,14 @@ class LSTM(Layer):
             u = F.tanh(self.x2u(x) + self.h2u(self.h))
 
         if self.c is None:
-            c_new = (i * u)
+            c_new = i * u
         else:
             c_new = (f * self.c) + (i * u)
 
         h_new = o * F.tanh(c_new)
 
         self.h, self.c = h_new, c_new
-        return h_new
+        return h_new, c_new
 
 
 # =============================================================================
@@ -294,7 +311,7 @@ class LSTM(Layer):
 class EmbedID(Layer):
     def __init__(self, in_size, out_size):
         super().__init__()
-        self.W = Parameter(np.random.randn(in_size, out_size), name='W')
+        self.W = Parameter(np.random.randn(in_size, out_size), name="W")
 
     def __call__(self, x):
         y = self.W[x]
@@ -307,10 +324,10 @@ class BatchNorm(Layer):
         # `.avg_mean` and `.avg_var` are `Parameter` objects, so they will be
         # saved to a file (using `save_weights()`).
         # But they don't need grads, so they're just used as `ndarray`.
-        self.avg_mean = Parameter(None, name='avg_mean')
-        self.avg_var = Parameter(None, name='avg_var')
-        self.gamma = Parameter(None, name='gamma')
-        self.beta = Parameter(None, name='beta')
+        self.avg_mean = Parameter(None, name="avg_mean")
+        self.avg_var = Parameter(None, name="avg_var")
+        self.gamma = Parameter(None, name="gamma")
+        self.beta = Parameter(None, name="beta")
 
     def _init_params(self, x):
         xp = cuda.get_array_module(x)
@@ -327,5 +344,6 @@ class BatchNorm(Layer):
     def __call__(self, x):
         if self.avg_mean.data is None:
             self._init_params(x)
-        return F.batch_nrom(x, self.gamma, self.beta, self.avg_mean.data,
-                            self.avg_var.data)
+        return F.batch_nrom(
+            x, self.gamma, self.beta, self.avg_mean.data, self.avg_var.data
+        )
