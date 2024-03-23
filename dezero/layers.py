@@ -282,7 +282,9 @@ class LSTM(Layer):
         self.h = None
         self.c = None
 
-    def forward(self, x):
+    def forward(self, x, h=None, c=None):
+        if not (h is None) and not (c is None):
+            self.h, self.c = h, c
         if self.h is None:
             f = F.sigmoid(self.x2f(x))
             i = F.sigmoid(self.x2i(x))
