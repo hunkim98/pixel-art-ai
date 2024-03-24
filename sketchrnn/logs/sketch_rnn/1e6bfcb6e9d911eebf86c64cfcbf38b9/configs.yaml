@@ -1,0 +1,640 @@
+batch_size:
+  computed: 4
+  is_explicitly_specified: false
+  is_hyperparam: null
+  is_meta: null
+  name: batch_size
+  options: []
+  order: 10
+  type: <class 'int'>
+  value: null
+d_z:
+  computed: 128
+  is_explicitly_specified: false
+  is_hyperparam: null
+  is_meta: null
+  name: d_z
+  options: []
+  order: 0
+  type: <class 'int'>
+  value: null
+dataset_name:
+  computed: bicycle
+  is_explicitly_specified: true
+  is_hyperparam: null
+  is_meta: null
+  name: dataset_name
+  options: []
+  order: 7
+  type: <class 'str'>
+  value: bicycle
+dec_hidden_size:
+  computed: 512
+  is_explicitly_specified: false
+  is_hyperparam: null
+  is_meta: null
+  name: dec_hidden_size
+  options: []
+  order: 3
+  type: <class 'int'>
+  value: null
+decoder:
+  computed: "DecoderRNN(\n  (lstm): LSTM(133, 512)\n  (init_state): Linear(in_features=128,\
+    \ out_features=1024, bias=True)\n  (mixtures): Linear(in_features=512, out_features=120,\
+    \ bias=True)\n  (q_head): Linear(in_features=512, out_features=3, bias=True)\n\
+    \  (q_log_softmax): LogSoftmax(dim=-1)\n)"
+  is_explicitly_specified: false
+  is_hyperparam: null
+  is_meta: null
+  name: decoder
+  options: []
+  order: 6
+  type: <class '__main__.DecoderRNN'>
+  value: "DecoderRNN(\n  (lstm): LSTM(133, 512)\n  (init_state): Linear(in_features=128,\
+    \ out_features=1024, bias=True)\n  (mixtures): Linear(in_features=512, out_features=120,\
+    \ bias=True)\n  (q_head): Linear(in_features=512, out_features=3, bias=True)\n\
+    \  (q_log_softmax): LogSoftmax(dim=-1)\n)"
+device:
+  computed: cpu
+  is_explicitly_specified: false
+  is_hyperparam: null
+  is_meta: null
+  name: device
+  options: []
+  order: 2
+  type: <class 'torch.device'>
+  value: null
+device.cuda_device:
+  computed: 0
+  is_explicitly_specified: false
+  is_hyperparam: false
+  is_meta: null
+  name: cuda_device
+  options: []
+  order: 3
+  type: <class 'int'>
+  value: null
+device.device:
+  computed: cpu
+  is_explicitly_specified: false
+  is_hyperparam: null
+  is_meta: null
+  name: device
+  options:
+  - _device
+  order: 0
+  type: <class 'torch.device'>
+  value: null
+device.device_info:
+  computed: CPU
+  is_explicitly_specified: false
+  is_hyperparam: null
+  is_meta: null
+  name: device_info
+  options:
+  - _device_info
+  order: 1
+  type: <class 'labml_helpers.device.DeviceInfo'>
+  value: null
+device.use_cuda:
+  computed: true
+  is_explicitly_specified: false
+  is_hyperparam: false
+  is_meta: null
+  name: use_cuda
+  options: []
+  order: 2
+  type: <class 'bool'>
+  value: null
+enc_hidden_size:
+  computed: 256
+  is_explicitly_specified: false
+  is_hyperparam: null
+  is_meta: null
+  name: enc_hidden_size
+  options: []
+  order: 1
+  type: <class 'int'>
+  value: null
+encoder:
+  computed: "EncoderRNN(\n  (lstm): LSTM(5, 256)\n  (mu_head): Linear(in_features=256,\
+    \ out_features=128, bias=True)\n  (sigma_head): Linear(in_features=256, out_features=128,\
+    \ bias=True)\n)"
+  is_explicitly_specified: false
+  is_hyperparam: null
+  is_meta: null
+  name: encoder
+  options: []
+  order: 5
+  type: <class '__main__.EncoderRNN'>
+  value: "EncoderRNN(\n  (lstm): LSTM(5, 256)\n  (mu_head): Linear(in_features=256,\
+    \ out_features=128, bias=True)\n  (sigma_head): Linear(in_features=256, out_features=128,\
+    \ bias=True)\n)"
+epochs:
+  computed: 1
+  is_explicitly_specified: false
+  is_hyperparam: null
+  is_meta: null
+  name: epochs
+  options: []
+  order: 22
+  type: <class 'int'>
+  value: null
+grad_clip:
+  computed: 1.0
+  is_explicitly_specified: false
+  is_hyperparam: null
+  is_meta: null
+  name: grad_clip
+  options: []
+  order: 35
+  type: <class 'float'>
+  value: null
+inner_iterations:
+  computed: 10
+  is_explicitly_specified: true
+  is_hyperparam: null
+  is_meta: null
+  name: inner_iterations
+  options: []
+  order: 15
+  type: <class 'int'>
+  value: 10
+is_loop_on_interrupt:
+  computed: false
+  is_explicitly_specified: false
+  is_hyperparam: null
+  is_meta: true
+  name: is_loop_on_interrupt
+  options: []
+  order: 28
+  type: <class 'bool'>
+  value: null
+is_save_models:
+  computed: false
+  is_explicitly_specified: false
+  is_hyperparam: null
+  is_meta: true
+  name: is_save_models
+  options: []
+  order: 24
+  type: <class 'bool'>
+  value: null
+is_track_time:
+  computed: false
+  is_explicitly_specified: false
+  is_hyperparam: null
+  is_meta: null
+  name: is_track_time
+  options: []
+  order: 17
+  type: <class 'bool'>
+  value: null
+kl_div_loss:
+  computed: KLDivLoss()
+  is_explicitly_specified: false
+  is_hyperparam: null
+  is_meta: null
+  name: kl_div_loss
+  options: []
+  order: 31
+  type: <class '__main__.KLDivLoss'>
+  value: null
+kl_div_loss_weight:
+  computed: 0.5
+  is_explicitly_specified: false
+  is_hyperparam: null
+  is_meta: null
+  name: kl_div_loss_weight
+  options: []
+  order: 33
+  type: <class 'float'>
+  value: null
+log_new_line_interval:
+  computed: 1
+  is_explicitly_specified: false
+  is_hyperparam: null
+  is_meta: true
+  name: log_new_line_interval
+  options: []
+  order: 25
+  type: <class 'int'>
+  value: null
+log_write_interval:
+  computed: 1
+  is_explicitly_specified: false
+  is_hyperparam: null
+  is_meta: true
+  name: log_write_interval
+  options: []
+  order: 26
+  type: <class 'int'>
+  value: null
+loop_count:
+  computed: 1
+  is_explicitly_specified: false
+  is_hyperparam: null
+  is_meta: true
+  name: loop_count
+  options:
+  - _data_loop_count
+  order: 21
+  type: <class 'int'>
+  value: null
+loop_step:
+  computed: null
+  is_explicitly_specified: false
+  is_hyperparam: null
+  is_meta: true
+  name: loop_step
+  options: []
+  order: 23
+  type: <class 'int'>
+  value: null
+max_seq_length:
+  computed: 200
+  is_explicitly_specified: false
+  is_hyperparam: null
+  is_meta: null
+  name: max_seq_length
+  options: []
+  order: 8
+  type: <class 'int'>
+  value: null
+mode:
+  computed: labml_helpers.train_valid.ModeState
+  is_explicitly_specified: false
+  is_hyperparam: null
+  is_meta: null
+  name: mode
+  options:
+  - from_type
+  order: 12
+  type: <class 'labml_helpers.train_valid.ModeState'>
+  value: null
+n_distributions:
+  computed: 20
+  is_explicitly_specified: false
+  is_hyperparam: null
+  is_meta: null
+  name: n_distributions
+  options: []
+  order: 4
+  type: <class 'int'>
+  value: null
+optimizer:
+  computed: "Adam (\nParameter Group 0\n    amsgrad: False\n    betas: (0.9, 0.999)\n\
+    \    capturable: False\n    differentiable: False\n    eps: 1e-08\n    foreach:\
+    \ None\n    fused: None\n    lr: 0.001\n    maximize: False\n    weight_decay:\
+    \ 0\n)"
+  is_explicitly_specified: false
+  is_hyperparam: null
+  is_meta: null
+  name: optimizer
+  options: []
+  order: 34
+  type: <class 'torch.optim.adam.Adam'>
+  value: labml_helpers.optimizer.OptimizerConfigs
+optimizer.betas:
+  computed:
+  - 0.9
+  - 0.999
+  is_explicitly_specified: false
+  is_hyperparam: null
+  is_meta: null
+  name: betas
+  options: []
+  order: 3
+  type: typing.Tuple[float, float]
+  value: null
+optimizer.d_model:
+  computed: null
+  is_explicitly_specified: false
+  is_hyperparam: null
+  is_meta: null
+  name: d_model
+  options: []
+  order: -1
+  type: <class 'int'>
+  value: null
+optimizer.eps:
+  computed: 1.0e-08
+  is_explicitly_specified: false
+  is_hyperparam: null
+  is_meta: null
+  name: eps
+  options: []
+  order: 4
+  type: <class 'float'>
+  value: null
+optimizer.learning_rate:
+  computed: 0.001
+  is_explicitly_specified: true
+  is_hyperparam: null
+  is_meta: null
+  name: learning_rate
+  options: []
+  order: 2
+  type: <class 'float'>
+  value: 0.001
+optimizer.momentum:
+  computed: null
+  is_explicitly_specified: false
+  is_hyperparam: null
+  is_meta: null
+  name: momentum
+  options: []
+  order: -1
+  type: <class 'float'>
+  value: null
+optimizer.optimizer:
+  computed: "Adam (\nParameter Group 0\n    amsgrad: False\n    betas: (0.9, 0.999)\n\
+    \    capturable: False\n    differentiable: False\n    eps: 1e-08\n    foreach:\
+    \ None\n    fused: None\n    lr: 0.001\n    maximize: False\n    weight_decay:\
+    \ 0\n)"
+  is_explicitly_specified: true
+  is_hyperparam: null
+  is_meta: null
+  name: optimizer
+  options:
+  - SGD
+  - Adam
+  - Noam
+  order: 0
+  type: <class 'torch.optim.adam.Adam'>
+  value: Adam
+optimizer.parameters:
+  computed:
+  - "Parameter containing:\ntensor([[ 0.0153, -0.0202,  0.0467, -0.0203,  0.0389],\n\
+    \        [-0.0514, -0.0495, -0.0023, -0.0214,  0.0053],\n        [ 0.0199, -0.0130,\
+    \ -0.0210, -0.0360,  0.0597],\n        ...,\n        [-0.0620, -0.0398,  0.0408,\
+    \ -0.0457, -0.0608],\n        [-0.0380, -0.0040,  0.0554, -0.0069,  0.0587],\n\
+    \        [ 0.0249,  0.0217, -0.0352, -0.0059, -0.0422]], requires_grad=True)"
+  - "Parameter containing:\ntensor([[ 0.0219, -0.0017, -0.0279,  ..., -0.0362, -0.0210,\
+    \ -0.0394],\n        [ 0.0566,  0.0554, -0.0608,  ...,  0.0597, -0.0208,  0.0379],\n\
+    \        [-0.0415, -0.0356, -0.0168,  ...,  0.0016, -0.0549,  0.0151],\n     \
+    \   ...,\n        [ 0.0213, -0.0278,  0.0064,  ...,  0.0228, -0.0358,  0.0164],\n\
+    \        [ 0.0011,  0.0395,  0.0022,  ...,  0.0202, -0.0331,  0.0078],\n     \
+    \   [-0.0294,  0.0166,  0.0234,  ...,  0.0089, -0.0075,  0.0089]],\n       requires_grad=True)"
+  - "Parameter containing:\ntensor([-0.0391, -0.0323,  0.0141,  ...,  0.0538,  0.0537,\
+    \ -0.0429],\n       requires_grad=True)"
+  - "Parameter containing:\ntensor([-0.0218, -0.0056,  0.0131,  ...,  0.0505, -0.0075,\
+    \  0.0107],\n       requires_grad=True)"
+  - "Parameter containing:\ntensor([[ 0.0267,  0.0171, -0.0302,  ...,  0.0521,  0.0289,\
+    \ -0.0166],\n        [-0.0404,  0.0198, -0.0035,  ...,  0.0152,  0.0076, -0.0439],\n\
+    \        [ 0.0468,  0.0072, -0.0021,  ...,  0.0061,  0.0507,  0.0300],\n     \
+    \   ...,\n        [-0.0620, -0.0069,  0.0212,  ...,  0.0390,  0.0241,  0.0296],\n\
+    \        [-0.0388,  0.0398,  0.0015,  ..., -0.0526, -0.0007,  0.0213],\n     \
+    \   [ 0.0333, -0.0171,  0.0614,  ...,  0.0469, -0.0015,  0.0402]],\n       requires_grad=True)"
+  - "Parameter containing:\ntensor([ 1.3420e-02,  1.2551e-02, -2.4529e-02,  4.2722e-02,\
+    \ -4.1307e-03,\n         5.3941e-02,  4.2169e-02,  4.4259e-02, -1.8318e-02,  3.9959e-03,\n\
+    \        -5.0370e-02,  3.0674e-02, -1.9215e-02, -3.3778e-02,  3.9280e-02,\n  \
+    \      -2.5660e-02, -4.4714e-02,  5.8256e-02, -6.1770e-02,  2.6875e-03,\n    \
+    \     5.5242e-02,  5.3085e-02, -1.9596e-02, -2.5171e-02,  2.1554e-02,\n      \
+    \   3.2679e-02, -2.0770e-02, -4.4220e-04, -4.5022e-02, -2.5444e-02,\n        \
+    \ 5.7073e-02,  1.6794e-02,  1.5743e-02,  3.6039e-02, -3.4912e-02,\n         5.1541e-02,\
+    \ -2.6531e-03,  4.3646e-02, -4.7612e-02,  5.3632e-02,\n        -4.6541e-03, -2.7247e-02,\
+    \ -4.5540e-02, -7.4444e-03, -4.8099e-02,\n        -4.0134e-02, -1.5085e-02, -4.4527e-03,\
+    \  4.1959e-02,  1.2230e-02,\n        -2.4953e-02,  3.2394e-02,  7.1242e-05,  1.5747e-02,\
+    \  3.0629e-02,\n        -6.1034e-02, -2.9741e-02, -4.4645e-02, -4.7268e-02,  6.1571e-02,\n\
+    \        -1.6141e-02,  1.2285e-02, -1.1904e-02, -4.9960e-02, -7.4527e-03,\n  \
+    \      -6.1821e-02,  5.2727e-02, -4.1299e-02, -4.9534e-02,  2.9930e-02,\n    \
+    \    -6.0721e-02, -5.7070e-02,  2.6969e-02, -4.1334e-02, -1.5883e-02,\n      \
+    \  -5.2165e-02,  2.5040e-02, -4.4179e-02,  1.1360e-03, -3.3502e-02,\n        \
+    \ 2.7019e-03, -9.9894e-03, -5.4795e-02, -3.9593e-02, -2.5569e-02,\n         1.2747e-02,\
+    \  3.4166e-02,  4.5099e-02,  4.1625e-02, -6.0214e-02,\n         3.4336e-02,  2.9086e-02,\
+    \ -3.1070e-02, -3.5971e-02, -5.1839e-02,\n        -5.0782e-02,  2.5330e-02,  6.0402e-02,\
+    \  4.1460e-02, -1.3262e-02,\n         5.6171e-02, -3.4260e-02, -5.1617e-02,  5.7125e-02,\
+    \ -4.8626e-02,\n         5.8444e-02, -8.5354e-03,  5.5601e-02,  2.3092e-02, -2.2437e-02,\n\
+    \         5.9078e-02, -2.2219e-02, -2.6121e-02, -5.3980e-02,  5.2216e-02,\n  \
+    \       5.9667e-02,  1.0647e-02, -5.8578e-02, -5.9844e-02, -5.9251e-02,\n    \
+    \    -1.8878e-02,  5.9408e-02,  5.8712e-02, -1.9285e-02, -4.1838e-02,\n      \
+    \   3.4621e-02, -2.8858e-02, -1.7921e-03], requires_grad=True)"
+  - "Parameter containing:\ntensor([[-0.0273, -0.0547, -0.0125,  ...,  0.0594,  0.0013,\
+    \ -0.0140],\n        [-0.0229, -0.0494,  0.0117,  ...,  0.0405,  0.0598, -0.0301],\n\
+    \        [ 0.0118,  0.0192, -0.0306,  ...,  0.0002, -0.0609, -0.0286],\n     \
+    \   ...,\n        [-0.0238,  0.0250, -0.0198,  ...,  0.0394,  0.0619,  0.0561],\n\
+    \        [ 0.0624, -0.0062, -0.0330,  ..., -0.0402, -0.0050, -0.0460],\n     \
+    \   [ 0.0458, -0.0413, -0.0511,  ...,  0.0272, -0.0001,  0.0099]],\n       requires_grad=True)"
+  - "Parameter containing:\ntensor([-0.0564,  0.0414, -0.0111,  0.0265, -0.0519, \
+    \ 0.0516, -0.0220,  0.0136,\n        -0.0301, -0.0269, -0.0455,  0.0342, -0.0210,\
+    \  0.0591, -0.0370,  0.0028,\n        -0.0615,  0.0204,  0.0419, -0.0484,  0.0417,\
+    \  0.0048,  0.0508, -0.0375,\n        -0.0206,  0.0370,  0.0563, -0.0613, -0.0187,\
+    \  0.0501,  0.0528,  0.0322,\n        -0.0323, -0.0292, -0.0322, -0.0559, -0.0057,\
+    \  0.0395,  0.0489,  0.0338,\n        -0.0067,  0.0596, -0.0052, -0.0190, -0.0123,\
+    \ -0.0325, -0.0057,  0.0403,\n        -0.0292,  0.0031, -0.0451, -0.0247,  0.0109,\
+    \  0.0468,  0.0342, -0.0176,\n        -0.0307,  0.0027, -0.0499,  0.0387,  0.0392,\
+    \ -0.0325, -0.0489,  0.0407,\n         0.0612, -0.0273,  0.0561,  0.0538, -0.0473,\
+    \  0.0219, -0.0283, -0.0326,\n        -0.0265,  0.0245,  0.0443, -0.0082, -0.0245,\
+    \ -0.0610,  0.0492, -0.0193,\n         0.0256,  0.0249,  0.0138,  0.0260,  0.0288,\
+    \ -0.0051, -0.0310, -0.0121,\n        -0.0166,  0.0303,  0.0409,  0.0622,  0.0584,\
+    \  0.0262, -0.0348,  0.0231,\n         0.0480,  0.0041,  0.0543,  0.0 [[...]]"
+  - Param [[...]]
+  - '[[...]]'
+  is_explicitly_specified: false
+  is_hyperparam: null
+  is_meta: true
+  name: parameters
+  options: []
+  order: 1
+  type: <built-in function any>
+  value:
+  - "Parameter containing:\ntensor([[ 0.0153, -0.0202,  0.0467, -0.0203,  0.0389],\n\
+    \        [-0.0514, -0.0495, -0.0023, -0.0214,  0.0053],\n        [ 0.0199, -0.0130,\
+    \ -0.0210, -0.0360,  0.0597],\n        ...,\n        [-0.0620, -0.0398,  0.0408,\
+    \ -0.0457, -0.0608],\n        [-0.0380, -0.0040,  0.0554, -0.0069,  0.0587],\n\
+    \        [ 0.0249,  0.0217, -0.0352, -0.0059, -0.0422]], requires_grad=True)"
+  - "Parameter containing:\ntensor([[ 0.0219, -0.0017, -0.0279,  ..., -0.0362, -0.0210,\
+    \ -0.0394],\n        [ 0.0566,  0.0554, -0.0608,  ...,  0.0597, -0.0208,  0.0379],\n\
+    \        [-0.0415, -0.0356, -0.0168,  ...,  0.0016, -0.0549,  0.0151],\n     \
+    \   ...,\n        [ 0.0213, -0.0278,  0.0064,  ...,  0.0228, -0.0358,  0.0164],\n\
+    \        [ 0.0011,  0.0395,  0.0022,  ...,  0.0202, -0.0331,  0.0078],\n     \
+    \   [-0.0294,  0.0166,  0.0234,  ...,  0.0089, -0.0075,  0.0089]],\n       requires_grad=True)"
+  - "Parameter containing:\ntensor([-0.0391, -0.0323,  0.0141,  ...,  0.0538,  0.0537,\
+    \ -0.0429],\n       requires_grad=True)"
+  - "Parameter containing:\ntensor([-0.0218, -0.0056,  0.0131,  ...,  0.0505, -0.0075,\
+    \  0.0107],\n       requires_grad=True)"
+  - "Parameter containing:\ntensor([[ 0.0267,  0.0171, -0.0302,  ...,  0.0521,  0.0289,\
+    \ -0.0166],\n        [-0.0404,  0.0198, -0.0035,  ...,  0.0152,  0.0076, -0.0439],\n\
+    \        [ 0.0468,  0.0072, -0.0021,  ...,  0.0061,  0.0507,  0.0300],\n     \
+    \   ...,\n        [-0.0620, -0.0069,  0.0212,  ...,  0.0390,  0.0241,  0.0296],\n\
+    \        [-0.0388,  0.0398,  0.0015,  ..., -0.0526, -0.0007,  0.0213],\n     \
+    \   [ 0.0333, -0.0171,  0.0614,  ...,  0.0469, -0.0015,  0.0402]],\n       requires_grad=True)"
+  - "Parameter containing:\ntensor([ 1.3420e-02,  1.2551e-02, -2.4529e-02,  4.2722e-02,\
+    \ -4.1307e-03,\n         5.3941e-02,  4.2169e-02,  4.4259e-02, -1.8318e-02,  3.9959e-03,\n\
+    \        -5.0370e-02,  3.0674e-02, -1.9215e-02, -3.3778e-02,  3.9280e-02,\n  \
+    \      -2.5660e-02, -4.4714e-02,  5.8256e-02, -6.1770e-02,  2.6875e-03,\n    \
+    \     5.5242e-02,  5.3085e-02, -1.9596e-02, -2.5171e-02,  2.1554e-02,\n      \
+    \   3.2679e-02, -2.0770e-02, -4.4220e-04, -4.5022e-02, -2.5444e-02,\n        \
+    \ 5.7073e-02,  1.6794e-02,  1.5743e-02,  3.6039e-02, -3.4912e-02,\n         5.1541e-02,\
+    \ -2.6531e-03,  4.3646e-02, -4.7612e-02,  5.3632e-02,\n        -4.6541e-03, -2.7247e-02,\
+    \ -4.5540e-02, -7.4444e-03, -4.8099e-02,\n        -4.0134e-02, -1.5085e-02, -4.4527e-03,\
+    \  4.1959e-02,  1.2230e-02,\n        -2.4953e-02,  3.2394e-02,  7.1242e-05,  1.5747e-02,\
+    \  3.0629e-02,\n        -6.1034e-02, -2.9741e-02, -4.4645e-02, -4.7268e-02,  6.1571e-02,\n\
+    \        -1.6141e-02,  1.2285e-02, -1.1904e-02, -4.9960e-02, -7.4527e-03,\n  \
+    \      -6.1821e-02,  5.2727e-02, -4.1299e-02, -4.9534e-02,  2.9930e-02,\n    \
+    \    -6.0721e-02, -5.7070e-02,  2.6969e-02, -4.1334e-02, -1.5883e-02,\n      \
+    \  -5.2165e-02,  2.5040e-02, -4.4179e-02,  1.1360e-03, -3.3502e-02,\n        \
+    \ 2.7019e-03, -9.9894e-03, -5.4795e-02, -3.9593e-02, -2.5569e-02,\n         1.2747e-02,\
+    \  3.4166e-02,  4.5099e-02,  4.1625e-02, -6.0214e-02,\n         3.4336e-02,  2.9086e-02,\
+    \ -3.1070e-02, -3.5971e-02, -5.1839e-02,\n        -5.0782e-02,  2.5330e-02,  6.0402e-02,\
+    \  4.1460e-02, -1.3262e-02,\n         5.6171e-02, -3.4260e-02, -5.1617e-02,  5.7125e-02,\
+    \ -4.8626e-02,\n         5.8444e-02, -8.5354e-03,  5.5601e-02,  2.3092e-02, -2.2437e-02,\n\
+    \         5.9078e-02, -2.2219e-02, -2.6121e-02, -5.3980e-02,  5.2216e-02,\n  \
+    \       5.9667e-02,  1.0647e-02, -5.8578e-02, -5.9844e-02, -5.9251e-02,\n    \
+    \    -1.8878e-02,  5.9408e-02,  5.8712e-02, -1.9285e-02, -4.1838e-02,\n      \
+    \   3.4621e-02, -2.8858e-02, -1.7921e-03], requires_grad=True)"
+  - "Parameter containing:\ntensor([[-0.0273, -0.0547, -0.0125,  ...,  0.0594,  0.0013,\
+    \ -0.0140],\n        [-0.0229, -0.0494,  0.0117,  ...,  0.0405,  0.0598, -0.0301],\n\
+    \        [ 0.0118,  0.0192, -0.0306,  ...,  0.0002, -0.0609, -0.0286],\n     \
+    \   ...,\n        [-0.0238,  0.0250, -0.0198,  ...,  0.0394,  0.0619,  0.0561],\n\
+    \        [ 0.0624, -0.0062, -0.0330,  ..., -0.0402, -0.0050, -0.0460],\n     \
+    \   [ 0.0458, -0.0413, -0.0511,  ...,  0.0272, -0.0001,  0.0099]],\n       requires_grad=True)"
+  - "Parameter containing:\ntensor([-0.0564,  0.0414, -0.0111,  0.0265, -0.0519, \
+    \ 0.0516, -0.0220,  0.0136,\n        -0.0301, -0.0269, -0.0455,  0.0342, -0.0210,\
+    \  0.0591, -0.0370,  0.0028,\n        -0.0615,  0.0204,  0.0419, -0.0484,  0.0417,\
+    \  0.0048,  0.0508, -0.0375,\n        -0.0206,  0.0370,  0.0563, -0.0613, -0.0187,\
+    \  0.0501,  0.0528,  0.0322,\n        -0.0323, -0.0292, -0.0322, -0.0559, -0.0057,\
+    \  0.0395,  0.0489,  0.0338,\n        -0.0067,  0.0596, -0.0052, -0.0190, -0.0123,\
+    \ -0.0325, -0.0057,  0.0403,\n        -0.0292,  0.0031, -0.0451, -0.0247,  0.0109,\
+    \  0.0468,  0.0342, -0.0176,\n        -0.0307,  0.0027, -0.0499,  0.0387,  0.0392,\
+    \ -0.0325, -0.0489,  0.0407,\n         0.0612, -0.0273,  0.0561,  0.0538, -0.0473,\
+    \  0.0219, -0.0283, -0.0326,\n        -0.0265,  0.0245,  0.0443, -0.0082, -0.0245,\
+    \ -0.0610,  0.0492, -0.0193,\n         0.0256,  0.0249,  0.0138,  0.0260,  0.0288,\
+    \ -0.0051, -0.0310, -0.0121,\n        -0.0166,  0.0303,  0.0409,  0.0622,  0.0584,\
+    \  0.0262, -0.0348,  0.0231,\n         0.0480,  0.0041,  0.0543,  0.0 [[...]]"
+  - Param [[...]]
+  - '[[...]]'
+optimizer.step_factor:
+  computed: null
+  is_explicitly_specified: false
+  is_hyperparam: null
+  is_meta: null
+  name: step_factor
+  options: []
+  order: -1
+  type: <class 'int'>
+  value: null
+reconstruction_loss:
+  computed: ReconstructionLoss()
+  is_explicitly_specified: false
+  is_hyperparam: null
+  is_meta: null
+  name: reconstruction_loss
+  options: []
+  order: 32
+  type: <class '__main__.ReconstructionLoss'>
+  value: null
+sampler:
+  computed: Sampler
+  is_explicitly_specified: false
+  is_hyperparam: null
+  is_meta: null
+  name: sampler
+  options: []
+  order: 29
+  type: <class '__main__.Sampler'>
+  value: Sampler
+save_models_interval:
+  computed: 1
+  is_explicitly_specified: false
+  is_hyperparam: null
+  is_meta: true
+  name: save_models_interval
+  options: []
+  order: 27
+  type: <class 'int'>
+  value: null
+state_modules:
+  computed: []
+  is_explicitly_specified: false
+  is_hyperparam: null
+  is_meta: null
+  name: state_modules
+  options: []
+  order: 16
+  type: typing.List[labml_helpers.metrics.StateModule]
+  value: []
+temperature:
+  computed: 0.4
+  is_explicitly_specified: false
+  is_hyperparam: null
+  is_meta: null
+  name: temperature
+  options: []
+  order: 30
+  type: <class 'float'>
+  value: null
+train_dataset:
+  computed: StrokesDataset
+  is_explicitly_specified: false
+  is_hyperparam: null
+  is_meta: null
+  name: train_dataset
+  options: []
+  order: 9
+  type: <class '__main__.StrokesDataset'>
+  value: StrokesDataset
+train_loader:
+  computed: torch.utils.data.dataloader.DataLoader
+  is_explicitly_specified: false
+  is_hyperparam: null
+  is_meta: null
+  name: train_loader
+  options: []
+  order: 19
+  type: <class 'torch.utils.data.dataloader.DataLoader'>
+  value: torch.utils.data.dataloader.DataLoader
+trainer:
+  computed: labml_helpers.train_valid.Trainer
+  is_explicitly_specified: false
+  is_hyperparam: null
+  is_meta: null
+  name: trainer
+  options:
+  - _default_trainer
+  order: 18
+  type: <class 'labml_helpers.train_valid.Trainer'>
+  value: null
+training_loop:
+  computed: LabTrainingLoop
+  is_explicitly_specified: false
+  is_hyperparam: null
+  is_meta: null
+  name: training_loop
+  options:
+  - _loop_configs
+  order: 20
+  type: <class 'labml_helpers.training_loop.TrainingLoop'>
+  value: null
+valid_dataset:
+  computed: StrokesDataset
+  is_explicitly_specified: false
+  is_hyperparam: null
+  is_meta: null
+  name: valid_dataset
+  options: []
+  order: 11
+  type: <class '__main__.StrokesDataset'>
+  value: StrokesDataset
+valid_loader:
+  computed: torch.utils.data.dataloader.DataLoader
+  is_explicitly_specified: false
+  is_hyperparam: null
+  is_meta: null
+  name: valid_loader
+  options: []
+  order: 14
+  type: <class 'torch.utils.data.dataloader.DataLoader'>
+  value: torch.utils.data.dataloader.DataLoader
+validator:
+  computed: labml_helpers.train_valid.Trainer
+  is_explicitly_specified: false
+  is_hyperparam: null
+  is_meta: null
+  name: validator
+  options:
+  - _default_validator
+  order: 13
+  type: <class 'labml_helpers.train_valid.Trainer'>
+  value: null
