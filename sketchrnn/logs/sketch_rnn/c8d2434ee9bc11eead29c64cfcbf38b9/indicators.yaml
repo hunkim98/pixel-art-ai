@@ -1,0 +1,46 @@
+indicators:
+  loss.kl.train:
+    class_name: Scalar
+    is_print: true
+    name: loss.kl.train
+  loss.reconstruction.train:
+    class_name: Scalar
+    is_print: true
+    name: loss.reconstruction.train
+  loss.total.train:
+    class_name: Scalar
+    is_print: true
+    name: loss.total.train
+wildcards:
+  '*':
+    class_name: Scalar
+    is_print: true
+    name: '*'
+  grad.*:
+    class_name: Scalar
+    is_print: false
+    name: grad.*
+  hp.*:
+    class_name: Scalar
+    is_print: false
+    name: hp.*
+  loss.total.*:
+    class_name: Scalar
+    is_print: true
+    name: loss.total.*
+  module.*:
+    class_name: Scalar
+    is_print: false
+    name: module.*
+  optim.*:
+    class_name: Scalar
+    is_print: false
+    name: optim.*
+  param.*:
+    class_name: Scalar
+    is_print: false
+    name: param.*
+  time.*:
+    class_name: Scalar
+    is_print: false
+    name: time.*

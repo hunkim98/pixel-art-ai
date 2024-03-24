@@ -111,6 +111,7 @@ class Cat(Function):
         self.axis = axis
 
     def forward(self, *inputs):
+        xp = cuda.get_array_module(inputs[0])
         z = xp.concatenate(inputs, axis=self.axis)
         return z
 
