@@ -102,6 +102,40 @@ def exp(x):
     return Exp()(x)
 
 
+class Cat(Function):
+    """
+    dezeroにはcatが定義されていないので、chatgptに作ってもらった。
+    """
+
+    def __init__(self, axis=0):
+        self.axis = axis
+
+    def forward(self, *inputs):
+        z = xp.concatenate(inputs, axis=self.axis)
+        return z
+
+    def backward(self, gz):
+        inputs = self.inputs
+        gradients = []
+        start_idx = 0
+
+        for x in inputs:
+            end_idx = start_idx + x.shape[self.axis]
+
+            indices = [slice(None)] * gz.ndim
+            indices[self.axis] = slice(start_idx, end_idx)
+
+            gradients.append(gz[tuple(indices)])
+
+            start_idx = end_idx
+
+        return tuple(gradients)
+
+
+def cat(inputs, axis=0):
+    return Cat(axis=axis)(*inputs)
+
+
 class Log(Function):
     def forward(self, x):
         xp = cuda.get_array_module(x)
