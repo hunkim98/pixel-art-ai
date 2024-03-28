@@ -1,0 +1,18 @@
+comment: ''
+commit: unknown
+commit_message: ''
+distributed_rank: 0
+distributed_world_size: 0
+is_dirty: false
+load_run: null
+name: sketch_rnn
+notes: ''
+python_file: notebook.ipynb
+repo_remotes: []
+start_step: 0
+tags:
+- sketch
+- rnn
+trial_date: '2024-03-26'
+trial_time: '20:27:01'
+uuid: c405f376eb6311ee8bf1c64cfcbf38bb
