@@ -386,51 +386,6 @@ class Linear(Function):
         return gx, gW, gb
 
 
-# class Linear(Function):
-#     def forward(self, x, W, b):
-
-#         self.original_x_shape = x.shape
-
-#         print(x.shape, x.ndim, "linear dimension input")
-#         if x.ndim == 3:
-#             N, S, D = x.shape
-#             x = x.reshape(-1, D)  # (N*S, D)
-#             print(x.shape)
-
-#         y = x.dot(W)
-
-#         if b is not None:
-#             y += b
-
-#         if self.original_x_shape[-1] == 3:
-#             print(y.shape, "linear")
-#             y = y.reshape(self.original_x_shape[0], self.original_x_shape[1], -1)
-
-#         return y
-
-#     def backward(self, gy):
-#         x, W, b = self.inputs
-#         gb = (
-#             None
-#             if b.data is None
-#             else sum_to(gy, b.shape) if gy.ndim == 3 else sum(gy, axis=0)
-#         )
-
-#         # Adjust gradient dimensions if input was 3D
-#         if gy.ndim == 3:
-#             N, S, D = self.original_x_shape
-#             gy = gy.reshape(-1, gy.shape[-1])
-#             x = x.reshape(-1, x.shape[-1])
-
-#         gx = matmul(gy, W.T)
-#         gW = matmul(x.T, gy)
-
-#         if self.original_x_shape[-1] == 3:
-#             gx = gx.reshape(self.original_x_shape)
-
-#         return gx, gW, gb
-
-
 def linear(x, W, b=None):
     return Linear()(x, W, b)
 
