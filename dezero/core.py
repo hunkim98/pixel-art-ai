@@ -307,62 +307,62 @@ def rsub(x0, x1):
 class Div(Function):
     def forward(self, x0, x1):
         # 원래는 아래것 하나만 있었다
-        # y = x0 / x1
+        y = x0 / x1
 
         #  Starting from here 여기서부터는 내가 추가한 부분
-        epsilon = 1e-20
-        xp = dezero.cuda.get_array_module(x0)
-        x1.data = xp.where(xp.abs(x1.data) < epsilon, epsilon, x1.data)
-        if xp.any(x1 == 0):
-            print("Warning: x1 is zero! from Div.forward()")
+        # epsilon = 1e-20
+        # xp = np if isinstance(x0.data, np.ndarray) else cupy
+        # x1.data = xp.where(xp.abs(x1.data) < epsilon, epsilon, x1.data)
+        # if xp.any(x1 == 0):
+        #     print("Warning: x1 is zero! from Div.forward()")
 
-        overflow_flag = [False]
-        with catch_warning_and_flag(overflow_flag):
-            y = x0 / x1
+        # overflow_flag = [False]
+        # with catch_warning_and_flag(overflow_flag):
+        #     y = x0 / x1
 
-        if overflow_flag[0]:
-            print("Warning: overflow is detected in Div.forward()")
-            max_value = xp.finfo(x0.dtype).max
-            y = xp.clip(y, -max_value, max_value)
+        # if overflow_flag[0]:
+        #     print("Warning: overflow is detected in Div.forward()")
+        #     max_value = xp.finfo(x0.dtype).max
+        #     y = xp.clip(y, -max_value, max_value)
         # Ends here 여기까지가 내가 추가한 부분
         return y
 
     def backward(self, gy):
         x0, x1 = self.inputs
         # 원래는 아래 것 2개만 있었다
-        # gx0 = gy / x1
-        # gx1 = gy * (-x0 / x1**2)
+        gx0 = gy / x1
+        gx1 = gy * (-x0 / x1**2)
 
         # Starting from here 여기서부터는 내가 추가한 부분
-        epsilon = 1e-20
-        xp = dezero.cuda.get_array_module(x1)
-        x1.data = xp.where(xp.abs(x1.data) < epsilon, epsilon, x1.data)
-        if xp.any(x1 == 0):
-            print("Warning: x1 is zero! from Div.backward()")
+        # epsilon = 1e-20
+        # xp = np if isinstance(x0.data, np.ndarray) else cupy
+        # x1.data = xp.where(xp.abs(x1.data) < epsilon, epsilon, x1.data)
+        # if xp.any(x1 == 0):
+        #     print("Warning: x1 is zero! from Div.backward()")
 
-        overflow_flag = [False]
-        with catch_warning_and_flag(overflow_flag):
-            gx0 = gy / x1
+        # overflow_flag = [False]
+        # with catch_warning_and_flag(overflow_flag):
+        #     gx0 = gy / x1
 
-        if overflow_flag[0]:
-            print("Warning: overflow is detected in Div.backward()")
-            max_value = xp.finfo(gx0.dtype).max
-            gx0 = xp.clip(gx0, -max_value, max_value)
+        # if overflow_flag[0]:
+        #     print("Warning: overflow is detected in Div.backward()")
+        #     max_value = xp.finfo(gx0.dtype).max
+        #     gx0 = xp.clip(gx0, -max_value, max_value)
 
-        overflow_flag = [False]
+        # overflow_flag = [False]
 
-        with catch_warning_and_flag(overflow_flag):
-            gx1 = gy * (-x0 / x1**2)
+        # with catch_warning_and_flag(overflow_flag):
+        #     gx1 = gy * (-x0 / x1**2)
 
-        if overflow_flag[0]:
-            print("Warning: overflow is detected in Div.backward()")
-            max_value = xp.finfo(gx1.dtype).max
-            gx1 = xp.clip(gx1, -max_value, max_value)
-        # Ends here 여기까지가 내가 추가한 부분
+        # if overflow_flag[0]:
+        #     print("Warning: overflow is detected in Div.backward()")
+        #     max_value = xp.finfo(gx1.dtype).max
+        #     gx1 = xp.clip(gx1, -max_value, max_value)
+        # # Ends here 여기까지가 내가 추가한 부분
 
-        if x0.shape != x1.shape:  # for broadcast
-            gx0 = dezero.functions.sum_to(gx0, x0.shape)
-            gx1 = dezero.functions.sum_to(gx1, x1.shape)
+        # if x0.shape != x1.shape:  # for broadcast
+        #     gx0 = dezero.functions.sum_to(gx0, x0.shape)
+        #     gx1 = dezero.functions.sum_to(gx1, x1.shape)
         return gx0, gx1
 
 
@@ -382,8 +382,8 @@ class Pow(Function):
 
     def forward(self, x):
         # I added this
-        epsilon = 1e-20
-        x += epsilon
+        # epsilon = 1e-20
+        # x += epsilon
         # (Up) I added this
         y = x**self.c
         return y

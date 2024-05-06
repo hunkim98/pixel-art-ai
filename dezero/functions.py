@@ -141,10 +141,10 @@ class Log(Function):
     def forward(self, x):
         xp = cuda.get_array_module(x)
         # Starting from here 여기부터 추가한 부분
-        epsilon = 1e-20
-        if xp.any(x == 0):
-            x.data = xp.clip(x.data, epsilon, None)
-            print("Warning: x has zero! from Log.forward()")
+        # epsilon = 1e-20
+        # if xp.any(x == 0):
+        #     x.data = xp.clip(x.data, epsilon, None)
+        #     print("Warning: x has zero! from Log.forward()")
         # Ending here 여기까지 추가한 부분
 
         y = xp.log(x)
@@ -156,9 +156,9 @@ class Log(Function):
         xp = cuda.get_array_module(x)
 
         # Starting from here 여기부터 추가한 부분
-        if xp.any(x + epsilon == 0):
-            x.data = xp.clip(x.data, epsilon, None)
-            print("Warning: x has zero! from Log.backward()")
+        # if xp.any(x + epsilon == 0):
+        #     x.data = xp.clip(x.data, epsilon, None)
+        #     print("Warning: x has zero! from Log.backward()")
         # Ending here 여기까지 추가한 부분
 
         gx = gy / x
