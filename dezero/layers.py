@@ -23,6 +23,12 @@ class Layer:
         outputs = self.forward(*inputs)
         if not isinstance(outputs, tuple):
             outputs = (outputs,)
+        # for test in inputs:
+        #     # check if weakref is called on NoneType
+        #     if test is None:
+        #         raise ValueError("NoneType input detected")
+        #     else:
+        #         print("input is not NoneType", test.__class__.__name__)
         self.inputs = [weakref.ref(x) for x in inputs]
         self.outputs = [weakref.ref(y) for y in outputs]
         return outputs if len(outputs) > 1 else outputs[0]
