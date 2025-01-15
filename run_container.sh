@@ -1,0 +1,1 @@
+docker run -it --ipc host --gpus all --name rnn -d --entrypoint /bin/bash -v /nas/code:/code -v /nas/data:/data -v /nas/checkpoints:/checkpoints donghun-dev:latest

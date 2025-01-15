@@ -4,3 +4,4 @@ data/images
 pixilart.tar.gz
 *.npz
 models
+__pycache__
